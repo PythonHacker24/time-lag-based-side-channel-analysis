@@ -5,7 +5,7 @@ import time
 import matplotlib.pyplot as plt 
 import numpy as np 
 
-serial_port = '/dev/tty.usbserial-0001'  
+serial_port = '/dev/cu.usbserial-0001'  
 baud_rate = 9600
 
 ser = serial.Serial(serial_port, baud_rate)
@@ -60,12 +60,18 @@ def strip_pads(listInput, offset):
         deleteFirst(listInput)
         deleteLast(listInput)
 
+def wrap_input(payload, length):
+    while len(payload) != length: 
+        payload += "0"
+    return payload 
+
 def calculate_dataset(character_set):
     logger = []
     try:
         for character in character_set:
+            character = wrap_input(character, 9)
             print("Injecting: " + character)
-            startTime = time.time() 
+            startTime = time.time()
             ser.write(character.encode('utf-8') + b'\n')
 
             try:
@@ -112,6 +118,15 @@ while counter < 10:
     nested_list = multi_readings(character_list, 10)
     final_output = summed_datapoints(nested_list)
 
+    final_output.append(0.0) 
+    plt.plot(character_list, final_output, marker='o', linestyle='-')
+    plt.title('Time vs Character Measurement')
+    plt.xlabel('Character')
+    plt.ylabel('Time Measurement')
+
+    plt.grid(True)
+    plt.show()
+
     # strip_pads(character_list, 4)
     # strip_pads(final_output, 4)
 
@@ -131,7 +146,6 @@ while counter < 10:
 
     counter += 1
 
-# final_output.append(0.0)
 plt.plot(character_list, final_output, marker='o', linestyle='-')
 
 plt.title('Time vs Character Measurement')
