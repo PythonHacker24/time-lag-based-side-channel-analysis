@@ -14,6 +14,20 @@ Side Channel Analysis (Time Lag Calculation): $m \times n$ attempts.
 
 Bruteforce: $m^n$.
 
-Attempts reduced to: $m \times n \div m^n \time 100$% 
+Attempts reduced to: $m \times n \div m^n \times 100$%
 
+Example: 
+```
+Password = "password"
+```
+
+```
+characters = "abcdefghijklmnopqrstuvwxyz"
+```
+
+Side Channel Attempts = $8 * 26 = 208$
+
+Bruteforce = $26 ^ 8 = 208827064576$
+
+Attempts by Side Channel Analysis as compared to Bruteforce: $9.96 * 10^-8$%
 
