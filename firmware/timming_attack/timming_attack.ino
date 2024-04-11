@@ -1,8 +1,8 @@
 // Define the pin connected to the LED
-const int ledPin = D0;
+const int ledPin = 13;
 
 // Define the correct password
-const String password = "password";
+const String password = "abcdefghi";
 
 void setup() {
   // Set the LED pin as output
@@ -29,12 +29,17 @@ void loop() {
 
     bool correctPassword = true;
 
+    if (input.length() != password.length()) {
+      correctPassword = false;
+    }
+    
     for (int i = 0; i < input.length(); i++) {
       // Check if the characters at the corresponding positions are not equal
       if (input.charAt(i) != password.charAt(i)) {
         correctPassword = false;
         break; // Break out of the loop since the password is incorrect
       }
+      delay(0.1);
     }
 
     if (correctPassword) {

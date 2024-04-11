@@ -10,8 +10,9 @@ baud_rate = 9600
 
 ser = serial.Serial(serial_port, baud_rate)
 
-character_str = "xxxxabcdefghijklmnopqrstuvwxyzxxxx"
+character_str = "abcdefghijklmnopqrstuvwxyz"
 character_list = list(character_str)
+parallel_character_list = list(character_str)
 
 ser.write("test".encode('utf-8') + b'\n')
 
@@ -79,6 +80,8 @@ def calculate_dataset(character_set):
                 data = ser.readline().decode()
                 logger.append(0.0)
 
+            time.sleep(0.1)
+
     except KeyboardInterrupt:
         print("Keyboard Interrupt Detected. Exiting ....")
         ser.close()
@@ -104,13 +107,31 @@ def summed_datapoints(nested_datasets):
 
     return output 
 
-nested_list = multi_readings(character_list, 10)
-final_output = summed_datapoints(nested_list)
+counter = 0
+while counter < 10:
+    nested_list = multi_readings(character_list, 10)
+    final_output = summed_datapoints(nested_list)
 
-strip_pads(character_list, 4)
-strip_pads(final_output, 4)
+    # strip_pads(character_list, 4)
+    # strip_pads(final_output, 4)
 
-final_output.append(0.0)
+    currentGuessMaxTime = max(final_output)
+    indexGuess = final_output.index(currentGuessMaxTime)
+
+    appendingList = []
+
+    for i in range(0, len(character_list) - 1):
+        appendingList.append(character_list[indexGuess])
+
+    for i in range(0, len(character_list) - 1):
+        appendingList[i] = appendingList[i] + parallel_character_list[i]
+
+    print(appendingList)
+    character_list = appendingList
+
+    counter += 1
+
+# final_output.append(0.0)
 plt.plot(character_list, final_output, marker='o', linestyle='-')
 
 plt.title('Time vs Character Measurement')
