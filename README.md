@@ -31,3 +31,5 @@ Bruteforce = $26 ^ 8 = 208827064576$
 
 Attempts by Side Channel Analysis as compared to Bruteforce: $9.96 * 10^-8$%
 
+Time Lag based Side-Channel Analysis reduces attempts by approximately 99.6 Billions as compared to Bruteforcing. 
+
